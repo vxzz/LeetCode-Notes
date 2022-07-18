@@ -5916,3 +5916,171 @@ public:
 
 - 时间复杂度：$O(n)$
 - 空间复杂度：$O(1)$
+
+### 6、二叉树的中序遍历
+
+[94. 二叉树的中序遍历 - 力扣（LeetCode）](https://leetcode.cn/problems/binary-tree-inorder-traversal/)（2022.7.18）
+
+```cpp
+//递归法
+class Solution {
+public:
+   void traversal(TreeNode* cur, vector<int>& vec){
+       if(cur == nullptr) return;
+       traversal(cur->left, vec);
+       vec.push_back(cur->val);
+       traversal(cur->right, vec);
+   }
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> result;
+        traversal(root, result);
+        return result;
+    }
+};
+```
+
+```cpp
+//统一化迭代
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root){
+        stack<TreeNode*> st;
+        vector<int> result;
+        if(root != nullptr) st.push(root);
+        while(!st.empty()){
+            TreeNode* node = st.top();
+            if(node != nullptr){
+                st.pop();
+                if(node->right) st.push(node->right);
+                st.push(node);
+                st.push(nullptr); 
+                if(node->left) st.push(node->left);
+            }else{
+                st.pop();
+                node = st.top();
+                st.pop();
+                result.push_back(node->val);
+            }
+        }
+        return result;
+    }
+};
+```
+
+
+
+### 7、对称二叉树
+
+[101. 对称二叉树 - 力扣（LeetCode）](https://leetcode.cn/problems/symmetric-tree/)（2022.7.18）
+
+```cpp
+//递归
+class Solution {
+public:
+    bool compare(TreeNode* left, TreeNode* right){
+        if(left == nullptr && right == nullptr) return true;
+        else if(left == nullptr && right != nullptr) return false;
+        else if(left != nullptr && right == nullptr) return false;
+        else if(left->val != right->val) return false;
+        
+        bool outSide = compare(left->left, right->right);
+        bool inSide = compare(left->right, right->left);
+        bool isSame = outSide && inSide;
+        return isSame;
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr) return true;
+        return compare(root->left, root->right);
+    }
+};
+```
+
+
+
+```cpp
+//迭代
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr) return true;
+        queue<TreeNode*> que;
+        que.push(root->left);
+        que.push(root->right);
+        while(!que.empty()){
+            TreeNode* leftNode = que.front(); que.pop();
+            TreeNode* rightNode = que.front(); que.pop();
+            if(!leftNode && !rightNode) continue;
+            if(!leftNode || !rightNode || leftNode->val != rightNode->val) return false;
+            que.push(leftNode->left);
+            que.push(rightNode->right);
+            que.push(leftNode->right);
+            que.push(rightNode->left);
+        }
+        return true;
+    }
+};
+```
+
+
+
+### 8、二叉树的最大深度
+
+[104. 二叉树的最大深度 - 力扣（LeetCode）](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)（2022.7.18）
+
+```cpp
+//递归
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr) return 0;
+        return 1 + max(maxDepth(root->left), maxDepth(root->right));
+    }
+};
+```
+
+
+
+```cpp
+//BFS
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr) return 0;
+        queue<TreeNode*> que;
+        que.push(root);
+        int depth = 0;
+        while(!que.empty()){
+            int size = que.size();
+            depth++;
+            for(int i = 0; i < size; ++i){
+                TreeNode* node = que.front();
+                que.pop();
+                if(node->left) que.push(node->left);
+                if(node->right) que.push(node->right);
+            }
+        }
+        return depth;
+    }
+};
+```
+
+
+
+### 9、买卖股票的最佳时机
+
+[121. 买卖股票的最佳时机 - 力扣（LeetCode）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)（2022.7.18）
+
+```cpp
+
+```
+
+
+
+### 10、只出现一次的数字
+
+[136. 只出现一次的数字 - 力扣（LeetCode）](https://leetcode.cn/problems/single-number/)（2022.7.18）
+
+```cpp
+
+```
+
